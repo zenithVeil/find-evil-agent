@@ -85,13 +85,11 @@ def generate_report(log_text, initial_analysis, corrected_analysis):
     )
     return response.choices[0].message.content
 
-sample_log = """
-2026-05-28 03:12:45 FAILED LOGIN user=admin ip=192.168.1.105
-2026-05-28 03:12:46 FAILED LOGIN user=admin ip=192.168.1.105
-2026-05-28 03:12:47 FAILED LOGIN user=admin ip=192.168.1.105
-2026-05-28 03:12:48 FAILED LOGIN user=admin ip=192.168.1.105
-2026-05-28 03:12:49 SUCCESS LOGIN user=admin ip=192.168.1.105
-"""
+# Read real Apache log file
+with open("Apache/Apache.log", "r", encoding="utf-8", errors="ignore") as f:
+    # Read first 100 lines only (file is large)
+    lines = f.readlines()[:100]
+    sample_log = "".join(lines)
 
 if __name__ == "__main__":
     print("=" * 50)
