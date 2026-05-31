@@ -35,6 +35,21 @@ def log_execution(step, input_data, output_data, duration):
     execution_logs.append(entry)
     print(f"[LOG] {entry['timestamp']} | {step} | {duration:.2f}s")
 
+def validate_input(log_text):
+    # Check if input is empty
+    if not log_text or len(log_text.strip()) == 0:
+        raise ValueError("Log file is empty!")
+    
+    # Check if file is too large (max 1MB)
+    if len(log_text) > 1_000_000:
+        raise ValueError("Log file too large! Max 1MB allowed.")
+    
+    # Check if it looks like a real log file
+    if len(log_text.splitlines()) < 2:
+        raise ValueError("Invalid log file — too few lines!")
+    
+    return True
+
 def analyze_logs(log_text):
     log_text = sanitize_input(log_text)
     prompt = f"""
@@ -132,6 +147,13 @@ with open("Apache/Apache.log", "r", encoding="utf-8", errors="ignore") as f:
     sample_log = "".join(lines)
 
 if __name__ == "__main__":
+    try:
+        validate_input(sample_log)
+        print("✅ Input validation passed!")
+    except ValueError as e:
+        print(f"❌ Validation failed: {e}")
+        exit(1)
+
     print("=" * 50)
     print("STEP 1: Initial Analysis...")
     print("=" * 50)
@@ -150,12 +172,13 @@ if __name__ == "__main__":
     report = generate_report(sample_log, initial, corrected)
     print(report)
 
-    # Save report
     with open("incident_report.txt", "w") as f:
         f.write(report)
     print("\n✅ Report saved to incident_report.txt")
 
-    # Save execution logs
     with open("execution_logs.json", "w") as f:
         json.dump(execution_logs, f, indent=2)
     print("✅ Execution logs saved to execution_logs.json")
+
+
+  
