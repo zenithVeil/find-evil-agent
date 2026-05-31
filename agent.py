@@ -50,6 +50,37 @@ def validate_input(log_text):
     
     return True
 
+
+
+    import subprocess
+
+def run_volatility(memory_file):
+    """Analyze memory dump using Volatility"""
+    try:
+        print("🧠 Running Volatility memory analysis...")
+        result = subprocess.run(
+            ["vol", "-f", memory_file, "windows.pslist"],
+            capture_output=True, text=True, timeout=60
+        )
+        return result.stdout if result.stdout else result.stderr
+    except Exception as e:
+        return f"Volatility error: {str(e)}"
+
+def run_tshark(pcap_file):
+    """Analyze network capture using tshark"""
+    try:
+        print("🌐 Running network traffic analysis...")
+        result = subprocess.run(
+            ["tshark", "-r", pcap_file, "-q", "-z", "conv,tcp"],
+            capture_output=True, text=True, timeout=60
+        )
+        return result.stdout if result.stdout else result.stderr
+    except Exception as e:
+        return f"Tshark error: {str(e)}"
+
+
+
+
 def analyze_logs(log_text):
     log_text = sanitize_input(log_text)
     prompt = f"""
