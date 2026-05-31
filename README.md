@@ -1,6 +1,6 @@
 # Find Evil Agent 
 
-An autonomous AI-powered cybersecurity incident response agent built for the SANS FIND EVIL! Hackathon.
+An autonomous AI-powered cybersecurity incident redsponse agent built for the SANS FIND EVIL! Hackathon.
 
 ## What it does
 - Analyzes system logs for suspicious activity
@@ -19,3 +19,18 @@ An autonomous AI-powered cybersecurity incident response agent built for the SAN
 
 ## License
 MIT
+
+## Security Considerations
+- API keys stored in `.env` file (never commit to GitHub)
+- Input sanitization applied to prevent prompt injection
+- Log entries sanitized before AI analysis
+
+## Known Limitations
+- Authentication system not implemented (single user only)
+- Basic prompt injection protection (pattern matching)
+- Designed for log file analysis only (not real-time monitoring)
+
+## Future Improvements
+- Add user authentication
+- Implement real-time log monitoring
+- Expand to more evidence types (memory, network captures)
