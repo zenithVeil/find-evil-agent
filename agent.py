@@ -10,6 +10,20 @@ load_dotenv()
 client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 execution_logs = []
 
+def sanitize_input(log_text):
+    # Remove prompt injection attempts
+    dangerous_patterns = [
+        "ignore previous instructions",
+        "ignore all instructions", 
+        "system prompt",
+        "jailbreak",
+        "disregard"
+    ]
+    cleaned = log_text
+    for pattern in dangerous_patterns:
+        cleaned = cleaned.lower().replace(pattern, "[REDACTED]")
+    return cleaned
+
 def log_execution(step, input_data, output_data, duration):
     entry = {
         "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
@@ -22,6 +36,7 @@ def log_execution(step, input_data, output_data, duration):
     print(f"[LOG] {entry['timestamp']} | {step} | {duration:.2f}s")
 
 def analyze_logs(log_text):
+    log_text = sanitize_input(log_text)
     prompt = f"""
     You are a cybersecurity analyst. Analyze these logs and find suspicious activity.
     
