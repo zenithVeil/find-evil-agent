@@ -173,7 +173,17 @@ def generate_report(log_text, initial_analysis, corrected_analysis):
     return result
 
 # Read real Apache log file
-with open("Apache/Apache.log", "r", encoding="utf-8", errors="ignore") as f:
+import platform
+
+# Use real SIFT logs on Linux, Apache sample on Windows
+if platform.system() == "Linux":
+    log_path = "/var/log/apache2/error.log"
+else:
+    log_path = "Apache/Apache.log"
+
+with open(log_path, "r", encoding="utf-8", errors="ignore") as f:
+
+    
     lines = f.readlines()[:100]
     sample_log = "".join(lines)
 
