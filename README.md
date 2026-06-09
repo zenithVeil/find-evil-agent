@@ -34,3 +34,14 @@ MIT
 - Add user authentication
 - Implement real-time log monitoring
 - Expand to more evidence types (memory, network captures)
+
+## Running Locally on SIFT Workstation
+1. Install SIFT from https://www.sans.org/tools/sift-workstation/
+2. Clone: git clone https://github.com/zenithVeil/find-evil-agent
+3. Install: pip3 install groq python-dotenv --break-system-packages
+4. Add key: echo "GROQ_API_KEY=your_key" > .env
+5. Run: python3 agent.py
+
+## Evidence Dataset
+Real Apache error logs from SIFT Workstation /var/log/apache2/error.log
+Contains real web attacks — directory traversal, port scanning, unauthorized access
